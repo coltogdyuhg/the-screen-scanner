@@ -1,18 +1,16 @@
 import React, { useState, useRef, useEffect } from 'react';
-import { Sparkles, Copy, ExternalLink, ShieldCheck, Zap, Monitor, ArrowRight, Download } from 'lucide-react';
+import { Sparkles, Copy, ExternalLink, ShieldCheck, Zap, Monitor, ArrowRight, MousePointer2 } from 'lucide-react';
 
 const App = () => {
   const [apiKey, setApiKey] = useState('');
   const [copied, setCopied] = useState(false);
   const bookmarkRef = useRef(null);
 
-  // The 2026 optimized Gemini 3 Bookmarklet Code
   const getBookmarkletCode = (key) => {
     const safeKey = key.trim() || 'PASTE_YOUR_API_KEY_HERE';
-    return `javascript:(async function(){const k="${safeKey}";const b=document.createElement("div");b.style="position:fixed;top:20px;right:20px;width:320px;background:#1e1f20;color:#e3e3e3;border:1px solid #3c4043;border-radius:16px;padding:20px;z-index:9999999;box-shadow:0 12px 40px rgba(0,0,0,0.6);font-family:sans-serif;line-height:1.5;",b.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;"><div style="display:flex;align-items:center;gap:8px;"><div style="width:12px;height:12px;background:linear-gradient(45deg,#4285f4,#9b72cb);border-radius:50%"></div><b style="color:#fff;font-size:14px;">Gemini 3 Scanner</b></div><button onclick="this.parentElement.parentElement.remove()" style="background:none;border:none;color:#b4b4b4;cursor:pointer;font-size:18px;">&times;</button></div><div id="gm-status" style="font-size:13px;color:#b4b4b4;max-height:400px;overflow-y:auto;">Ready to scan...</div><canvas id="gm-canvas" style="display:none;"></canvas>',document.body.appendChild(b);const s=document.getElementById("gm-status");try{const stream=await navigator.mediaDevices.getDisplayMedia({video:{displaySurface:"browser"}}),vid=document.createElement("video");vid.srcObject=stream,await vid.play();const cvs=document.getElementById("gm-canvas");cvs.width=vid.videoWidth,cvs.height=vid.videoHeight,cvs.getContext("2d").drawImage(vid,0,0);const img=cvs.toDataURL("image/jpeg").split(",")[1];stream.getTracks().forEach(t=>t.stop()),s.innerHTML="<span style=\'color:#8ab4f8\'>Analyzing screen...</span>";const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key="+k,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:\"Analyze this screenshot. Identify the primary question or problem and provide a clear, concise solution.\"},{inline_data:{mime_type:\"image/jpeg\",data:img}}]}],safetySettings:[{category:\"HARM_CATEGORY_HARASSMENT\",threshold:\"BLOCK_NONE\"},{category:\"HARM_CATEGORY_HATE_SPEECH\",threshold:\"BLOCK_NONE\"},{category:\"HARM_CATEGORY_SEXUALLY_EXPLICIT\",threshold:\"BLOCK_NONE\"},{category:\"HARM_CATEGORY_DANGEROUS_CONTENT\",threshold:\"BLOCK_NONE\"}]})}),data=await res.json();if(data.error)s.innerText="Error: "+data.error.message;else if(data.candidates?.[0])s.style.color="#e3e3e3",s.innerText=data.candidates[0].content.parts[0].text;else s.innerText="AI refused to answer. Check safety filters."}catch(e){s.innerText="System Error: "+e.message}})();`;
+    return `javascript:(async function(){const k="${safeKey}";const b=document.createElement("div");b.style="position:fixed;top:20px;right:20px;width:340px;background:rgba(30,31,32,0.95);backdrop-filter:blur(12px);color:#e3e3e3;border:1px solid rgba(255,255,255,0.1);border-radius:20px;padding:24px;z-index:9999999;box-shadow:0 20px 50px rgba(0,0,0,0.5);font-family:sans-serif;line-height:1.6;",b.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;"><div style="display:flex;align-items:center;gap:10px;"><div style="width:14px;height:14px;background:linear-gradient(45deg,#4285f4,#9b72cb);border-radius:50%;box-shadow:0 0 10px rgba(66,133,244,0.5)"></div><b style="color:#fff;font-size:15px;letter-spacing:0.3px;">Gemini 3 Pro</b></div><button onclick="this.parentElement.parentElement.remove()" style="background:none;border:none;color:#9aa0a6;cursor:pointer;font-size:20px;padding:4px;">&times;</button></div><div id="gm-status" style="font-size:14px;color:#c4c7c5;max-height:450px;overflow-y:auto;scrollbar-width:thin;">Initializing neural scan...</div><canvas id="gm-canvas" style="display:none;"></canvas>',document.body.appendChild(b);const s=document.getElementById("gm-status");try{const stream=await navigator.mediaDevices.getDisplayMedia({video:{displaySurface:"browser"}}),vid=document.createElement("video");vid.srcObject=stream,await vid.play();const cvs=document.getElementById("gm-canvas");cvs.width=vid.videoWidth,cvs.height=vid.videoHeight,cvs.getContext("2d").drawImage(vid,0,0);const img=cvs.toDataURL("image/jpeg").split(",")[1];stream.getTracks().forEach(t=>t.stop()),s.innerHTML="<span style=\'color:#8ab4f8;display:flex;align-items:center;gap:8px;\'><svg width=\'16\' height=\'16\' viewBox=\'0 0 24 24\' fill=\'none\' stroke=\'currentColor\' stroke-width=\'2\'><path d=\'M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83\'/></svg> Analyzing intelligence...</span>";const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key="+k,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:\"Identify the question or problem in this image and provide a step-by-step solution.\"},{inline_data:{mime_type:\"image/jpeg\",data:img}}]}],safetySettings:[{category:\"HARM_CATEGORY_HARASSMENT\",threshold:\"BLOCK_NONE\"},{category:\"HARM_CATEGORY_HATE_SPEECH\",threshold:\"BLOCK_NONE\"},{category:\"HARM_CATEGORY_SEXUALLY_EXPLICIT\",threshold:\"BLOCK_NONE\"},{category:\"HARM_CATEGORY_DANGEROUS_CONTENT\",threshold:\"BLOCK_NONE\"}]})}),data=await res.json();if(data.error)s.innerText="Error: "+data.error.message;else if(data.candidates?.[0])s.style.color="#e3e3e3",s.innerText=data.candidates[0].content.parts[0].text;else s.innerText="Response blocked by security protocols."}catch(e){s.innerText="System Error: "+e.message}})();`;
   };
 
-  // Effect to set the href manually to bypass React's javascript: URL warning
   useEffect(() => {
     if (bookmarkRef.current) {
       bookmarkRef.current.setAttribute('href', getBookmarkletCode(apiKey));
@@ -20,135 +18,161 @@ const App = () => {
   }, [apiKey]);
 
   const handleCopy = () => {
-    const code = getBookmarkletCode(apiKey);
-    navigator.clipboard.writeText(code);
+    navigator.clipboard.writeText(getBookmarkletCode(apiKey));
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
 
   return (
-    <div className="min-h-screen bg-[#131314] text-[#e3e3e3] font-sans selection:bg-blue-500/30">
-      {/* Background Glow */}
-      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none" />
+    <div className="min-h-screen bg-[#0e0e10] text-[#e3e3e3] font-sans selection:bg-blue-500/30 overflow-x-hidden">
+      {/* Dynamic Background Mesh */}
+      <div className="fixed inset-0 overflow-hidden pointer-events-none">
+        <div className="absolute top-[-10%] left-[-10%] w-[40%] h-[40%] bg-blue-600/10 blur-[120px] rounded-full animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-10%] w-[40%] h-[40%] bg-purple-600/10 blur-[120px] rounded-full animate-pulse transition-all duration-1000" />
+      </div>
 
-      {/* Header */}
-      <nav className="relative flex items-center justify-between px-8 py-6 max-w-6xl mx-auto">
-        <div className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#4285f4] via-[#9b72cb] to-[#d96570] flex items-center justify-center">
-            <Sparkles className="text-white w-5 h-5" />
+      <nav className="relative flex items-center justify-between px-10 py-8 max-w-7xl mx-auto">
+        <div className="flex items-center gap-3">
+          <div className="relative group">
+            <div className="absolute -inset-1 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg blur opacity-40 group-hover:opacity-100 transition duration-1000 group-hover:duration-200" />
+            <div className="relative w-10 h-10 rounded-lg bg-[#1e1f20] border border-white/10 flex items-center justify-center">
+              <Sparkles className="text-white w-6 h-6" />
+            </div>
           </div>
-          <span className="text-xl font-medium tracking-tight">AI Bookmarklet</span>
+          <span className="text-2xl font-semibold tracking-tight bg-gradient-to-br from-white to-white/60 bg-clip-text text-transparent">
+            Gemini <span className="font-light italic">Bookmarklet</span>
+          </span>
         </div>
-        <div className="hidden md:flex items-center gap-8 text-sm text-[#b4b4b4]">
-          <a href="#how" className="hover:text-white transition-colors">How it works</a>
-          <a href="#security" className="hover:text-white transition-colors">Security</a>
-          <div className="px-4 py-2 rounded-full bg-[#1e1f20] border border-[#3c4043] flex items-center gap-2">
-            <Monitor size={14} /> Gemini 3 Flash
+        
+        <div className="hidden md:flex items-center gap-6 p-1 bg-white/5 backdrop-blur-md rounded-full border border-white/10 px-6 py-2">
+          <a href="#how" className="text-sm text-[#c4c7c5] hover:text-white transition-colors">How it works</a>
+          <div className="w-[1px] h-4 bg-white/10" />
+          <div className="flex items-center gap-2 text-sm font-medium">
+            <span className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
+            Gemini 3 Flash Pro
           </div>
         </div>
       </nav>
 
-      <main className="relative max-w-4xl mx-auto px-6 py-12 md:py-24 text-center">
-        {/* Hero Section */}
-        <h1 className="text-5xl md:text-7xl font-semibold tracking-tight mb-6 bg-gradient-to-r from-[#4285f4] via-[#9b72cb] to-[#d96570] bg-clip-text text-transparent">
-          The Screen Scanner.
+      <main className="relative max-w-5xl mx-auto px-6 pt-20 pb-32 text-center">
+        {/* Animated Badge */}
+        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-500/10 border border-blue-500/20 text-blue-400 text-xs font-bold uppercase tracking-widest mb-8">
+          <Zap size={14} className="fill-current" /> Version 2026.1
+        </div>
+
+        <h1 className="text-6xl md:text-8xl font-bold tracking-tighter mb-8 leading-[1.1]">
+          Scan. Solve. <br />
+          <span className="bg-gradient-to-r from-[#4285f4] via-[#9b72cb] to-[#d96570] bg-clip-text text-transparent italic">Understand.</span>
         </h1>
-        <p className="text-lg md:text-xl text-[#b4b4b4] max-w-2xl mx-auto mb-12">
-          A powerful, zero-install bookmarklet that lets you solve anything on your screen using Gemini 3. Just drag, click, and scan.
+        
+        <p className="text-xl md:text-2xl text-[#c4c7c5] max-w-3xl mx-auto mb-16 leading-relaxed">
+          The world's most elegant vision-agent, living in your bookmarks bar. 
+          Analyze complex questions instantly without switching tabs.
         </p>
 
-        {/* Setup Card */}
-        <div className="bg-[#1e1f20] border border-[#3c4043] rounded-[32px] p-8 md:p-12 shadow-2xl">
-          <div className="max-w-md mx-auto space-y-8">
-            <div className="space-y-3">
-              <label className="text-sm font-medium text-[#8ab4f8] flex items-center gap-2 justify-center">
-                <ShieldCheck size={16} /> ENTER YOUR GEMINI API KEY
-              </label>
-              <input
-                type="text"
-                value={apiKey}
-                onChange={(e) => setApiKey(e.target.value)}
-                placeholder="AIzaSy..."
-                className="w-full bg-[#131314] border border-[#3c4043] rounded-2xl px-5 py-4 text-center focus:outline-none focus:border-[#4285f4] transition-all text-white placeholder-[#4e4f50]"
-              />
-              <p className="text-xs text-[#757575]">
-                Get your key at <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer" className="text-[#8ab4f8] hover:underline">Google AI Studio</a>. It's free.
-              </p>
-            </div>
+        {/* Setup Card with Depth */}
+        <div className="relative group max-w-2xl mx-auto">
+          <div className="absolute -inset-1 bg-gradient-to-r from-blue-600/20 to-purple-600/20 rounded-[40px] blur-xl opacity-0 group-hover:opacity-100 transition duration-500" />
+          <div className="relative bg-[#1e1f20]/80 backdrop-blur-xl border border-white/10 rounded-[40px] p-10 md:p-14 shadow-[0_0_80px_rgba(0,0,0,0.4)]">
+            
+            <div className="space-y-10">
+              <div className="space-y-4">
+                <div className="flex items-center justify-between px-2">
+                  <label className="text-xs font-bold text-[#8ab4f8] tracking-widest uppercase">
+                    Activation Key
+                  </label>
+                  <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer" className="text-xs text-[#c4c7c5] hover:text-[#8ab4f8] flex items-center gap-1">
+                    Get Free Key <ExternalLink size={12} />
+                  </a>
+                </div>
+                <div className="relative">
+                  <input
+                    type="password"
+                    value={apiKey}
+                    onChange={(e) => setApiKey(e.target.value)}
+                    placeholder="Enter your Gemini API key"
+                    className="w-full bg-[#0e0e10]/50 border border-white/10 rounded-2xl px-6 py-5 focus:outline-none focus:ring-2 focus:ring-blue-500/50 transition-all text-white placeholder-white/20 text-lg shadow-inner"
+                  />
+                  {apiKey && <ShieldCheck className="absolute right-5 top-1/2 -translate-y-1/2 text-green-500" />}
+                </div>
+              </div>
 
-            <div className="flex flex-col items-center gap-4">
-              <div className="p-[2px] rounded-full bg-gradient-to-r from-[#4285f4] via-[#9b72cb] to-[#d96570] hover:scale-[1.02] transition-transform">
-                <a
-                  ref={bookmarkRef}
-                  onClick={(e) => {
-                    if (e.target.tagName === 'A' && !apiKey.trim()) {
-                      e.preventDefault();
-                      alert("Please enter an API key first.");
-                    }
-                  }}
-                  className="block px-8 py-4 bg-[#1e1f20] rounded-full text-white font-medium cursor-move select-none"
+              <div className="flex flex-col items-center gap-6">
+                <div className="relative group/btn">
+                  <div className="absolute -inset-1 bg-gradient-to-r from-[#4285f4] to-[#9b72cb] rounded-full blur opacity-50 group-hover/btn:opacity-100 transition duration-500" />
+                  <a
+                    ref={bookmarkRef}
+                    onClick={(e) => {
+                      if (!apiKey.trim()) {
+                        e.preventDefault();
+                        alert("The engine requires a key to start.");
+                      }
+                    }}
+                    className="relative block px-12 py-5 bg-[#1e1f20] rounded-full text-white font-bold text-lg cursor-move select-none border border-white/10 group-hover/btn:bg-transparent transition-colors"
+                  >
+                    <span className="flex items-center gap-3">
+                      <MousePointer2 size={20} className="group-hover/btn:animate-bounce" />
+                      Gemini 3 Scanner
+                    </span>
+                  </a>
+                </div>
+                
+                <p className="text-sm text-[#c4c7c5] flex items-center gap-2">
+                  <Monitor size={14} /> Drag this to your bookmarks bar
+                </p>
+              </div>
+
+              <div className="pt-8 border-t border-white/5">
+                <button
+                  onClick={handleCopy}
+                  className="flex items-center gap-3 text-sm font-medium px-6 py-3 rounded-full bg-white/5 hover:bg-white/10 transition-all mx-auto border border-white/5"
                 >
-                  Drag to Bookmarks Bar
-                </a>
+                  {copied ? (
+                    <span className="text-green-400 flex items-center gap-2">Code Injected! <Zap size={14} className="fill-current" /></span>
+                  ) : (
+                    <>Copy JavaScript <Copy size={16} /></>
+                  )}
+                </button>
               </div>
-              <span className="text-sm text-[#b4b4b4] flex items-center gap-2">
-                <ArrowRight size={14} /> or copy the code below
-              </span>
             </div>
-
-            <button
-              onClick={handleCopy}
-              className="flex items-center gap-2 text-sm text-[#b4b4b4] hover:text-white mx-auto transition-colors"
-            >
-              {copied ? 'Copied!' : 'Copy raw code'} <Copy size={14} />
-            </button>
           </div>
         </div>
 
-        {/* Features Grid */}
-        <div className="grid md:grid-cols-3 gap-6 mt-24 text-left">
-          <div className="p-6 rounded-2xl bg-[#1e1f20]/50 border border-[#3c4043]/50">
-            <Zap className="text-[#8ab4f8] mb-4" />
-            <h3 className="font-medium mb-2">Gemini 3 Flash</h3>
-            <p className="text-sm text-[#b4b4b4]">Powered by the 2026 flagship model for near-instant analysis.</p>
-          </div>
-          <div className="p-6 rounded-2xl bg-[#1e1f20]/50 border border-[#3c4043]/50">
-            <Monitor className="text-[#c58af9] mb-4" />
-            <h3 className="font-medium mb-2">Native Capture</h3>
-            <p className="text-sm text-[#b4b4b4]">Uses standard browser APIs to grab the exact tab you want to solve.</p>
-          </div>
-          <div className="p-6 rounded-2xl bg-[#1e1f20]/50 border border-[#3c4043]/50">
-            <ShieldCheck className="text-[#f98a8a] mb-4" />
-            <h3 className="font-medium mb-2">Privacy First</h3>
-            <p className="text-sm text-[#b4b4b4]">Your API key stays in the bookmark. We never see your data.</p>
-          </div>
-        </div>
-      </main>
-
-      {/* Instruction Section */}
-      <section id="how" className="max-w-4xl mx-auto px-6 py-24 border-t border-[#3c4043]">
-        <h2 className="text-3xl font-medium mb-12 text-center">Installation Guide</h2>
-        <div className="space-y-12">
+        {/* Feature Highlights */}
+        <div className="grid md:grid-cols-3 gap-8 mt-32">
           {[
-            { step: 1, title: "Add Your Key", desc: "Paste your Gemini API key into the box above. The button will automatically update with your unique code." },
-            { step: 2, title: "Drag to Bar", desc: "Ensure your Bookmarks Bar is visible (Ctrl+Shift+B). Drag the colorful 'Drag to Bookmarks Bar' button into that space." },
-            { step: 3, title: "Scan & Solve", desc: "Navigate to any homework site or quiz. Click your bookmark, select the tab, and watch Gemini 3 solve it in real-time." }
-          ].map((item) => (
-            <div key={item.step} className="flex gap-6 items-start">
-              <div className="w-10 h-10 rounded-full bg-[#2b2c2e] flex items-center justify-center shrink-0 font-bold border border-[#3c4043]">
-                {item.step}
+            { icon: <Zap />, title: "Sub-Second Latency", color: "text-blue-400" },
+            { icon: <Monitor />, title: "Perfect Screen Vision", color: "text-purple-400" },
+            { icon: <ShieldCheck />, title: "Encrypted & Private", color: "text-red-400" }
+          ].map((feature, i) => (
+            <div key={i} className="group p-8 rounded-[32px] bg-white/[0.02] border border-white/5 hover:bg-white/[0.05] transition-all duration-500 text-left">
+              <div className={`${feature.color} mb-6 transform group-hover:scale-110 transition-transform duration-500`}>
+                {React.cloneElement(feature.icon, { size: 32 })}
               </div>
-              <div>
-                <h4 className="text-lg font-medium mb-1">{item.title}</h4>
-                <p className="text-[#b4b4b4]">{item.desc}</p>
-              </div>
+              <h3 className="text-xl font-semibold mb-2">{feature.title}</h3>
+              <p className="text-[#c4c7c5] text-sm leading-relaxed">
+                Optimized for the 2026 multimodal engine with enhanced context windows.
+              </p>
             </div>
           ))}
         </div>
-      </section>
+      </main>
 
-      <footer className="py-12 text-center text-sm text-[#757575] border-t border-[#3c4043]">
-        <p>© 2026 AI Bookmarklet Project. Not affiliated with Google.</p>
+      <footer className="relative py-20 px-10 border-t border-white/5 text-center bg-[#0e0e10]">
+        <div className="flex flex-col items-center gap-6 max-w-4xl mx-auto">
+          <div className="w-12 h-12 rounded-xl bg-white/5 flex items-center justify-center border border-white/10">
+            <Sparkles size={24} className="text-[#4285f4]" />
+          </div>
+          <p className="text-[#c4c7c5] max-w-md">
+            Built for those who demand intelligence at their fingertips. 
+            Gemini 3 Pro multimodal processing enabled.
+          </p>
+          <div className="flex gap-8 text-xs font-bold uppercase tracking-widest text-[#757575]">
+            <span className="hover:text-white cursor-pointer transition-colors">Documentation</span>
+            <span className="hover:text-white cursor-pointer transition-colors">API Status</span>
+            <span className="hover:text-white cursor-pointer transition-colors">Safety Console</span>
+          </div>
+        </div>
       </footer>
     </div>
   );
