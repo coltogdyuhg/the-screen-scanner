@@ -1,19 +1,27 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import { Sparkles, Copy, ExternalLink, ShieldCheck, Zap, Monitor, ArrowRight, Download } from 'lucide-react';
 
 const App = () => {
   const [apiKey, setApiKey] = useState('');
   const [copied, setCopied] = useState(false);
+  const bookmarkRef = useRef(null);
 
   // The 2026 optimized Gemini 3 Bookmarklet Code
   const getBookmarkletCode = (key) => {
     const safeKey = key.trim() || 'PASTE_YOUR_API_KEY_HERE';
-    const code = `javascript:(async function(){const k="${safeKey}";const b=document.createElement("div");b.style="position:fixed;top:20px;right:20px;width:320px;background:#1e1f20;color:#e3e3e3;border:1px solid #3c4043;border-radius:16px;padding:20px;z-index:9999999;box-shadow:0 12px 40px rgba(0,0,0,0.6);font-family:sans-serif;line-height:1.5;",b.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;"><div style="display:flex;align-items:center;gap:8px;"><div style="width:12px;height:12px;background:linear-gradient(45deg,#4285f4,#9b72cb);border-radius:50%"></div><b style="color:#fff;font-size:14px;">Gemini 3 Scanner</b></div><button onclick="this.parentElement.parentElement.remove()" style="background:none;border:none;color:#b4b4b4;cursor:pointer;font-size:18px;">&times;</button></div><div id="gm-status" style="font-size:13px;color:#b4b4b4;max-height:400px;overflow-y:auto;">Ready to scan...</div><canvas id="gm-canvas" style="display:none;"></canvas>',document.body.appendChild(b);const s=document.getElementById("gm-status");try{const stream=await navigator.mediaDevices.getDisplayMedia({video:{displaySurface:"browser"}}),vid=document.createElement("video");vid.srcObject=stream,await vid.play();const cvs=document.getElementById("gm-canvas");cvs.width=vid.videoWidth,cvs.height=vid.videoHeight,cvs.getContext("2d").drawImage(vid,0,0);const img=cvs.toDataURL("image/jpeg").split(",")[1];stream.getTracks().forEach(t=>t.stop()),s.innerHTML="<span style='color:#8ab4f8'>Analyzing screen...</span>";const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key="+k,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:"Analyze this screenshot. Identify the primary question or problem and provide a clear, concise solution."},{inline_data:{mime_type:"image/jpeg",data:img}}]}],safetySettings:[{category:"HARM_CATEGORY_HARASSMENT",threshold:"BLOCK_NONE"},{category:"HARM_CATEGORY_HATE_SPEECH",threshold:"BLOCK_NONE"},{category:"HARM_CATEGORY_SEXUALLY_EXPLICIT",threshold:"BLOCK_NONE"},{category:"HARM_CATEGORY_DANGEROUS_CONTENT",threshold:"BLOCK_NONE"}]})}),data=await res.json();if(data.error)s.innerText="Error: "+data.error.message;else if(data.candidates?.[0])s.style.color="#e3e3e3",s.innerText=data.candidates[0].content.parts[0].text;else s.innerText="AI refused to answer. Check safety filters."}catch(e){s.innerText="System Error: "+e.message}})();`;
-    return code;
+    return `javascript:(async function(){const k="${safeKey}";const b=document.createElement("div");b.style="position:fixed;top:20px;right:20px;width:320px;background:#1e1f20;color:#e3e3e3;border:1px solid #3c4043;border-radius:16px;padding:20px;z-index:9999999;box-shadow:0 12px 40px rgba(0,0,0,0.6);font-family:sans-serif;line-height:1.5;",b.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;"><div style="display:flex;align-items:center;gap:8px;"><div style="width:12px;height:12px;background:linear-gradient(45deg,#4285f4,#9b72cb);border-radius:50%"></div><b style="color:#fff;font-size:14px;">Gemini 3 Scanner</b></div><button onclick="this.parentElement.parentElement.remove()" style="background:none;border:none;color:#b4b4b4;cursor:pointer;font-size:18px;">&times;</button></div><div id="gm-status" style="font-size:13px;color:#b4b4b4;max-height:400px;overflow-y:auto;">Ready to scan...</div><canvas id="gm-canvas" style="display:none;"></canvas>',document.body.appendChild(b);const s=document.getElementById("gm-status");try{const stream=await navigator.mediaDevices.getDisplayMedia({video:{displaySurface:"browser"}}),vid=document.createElement("video");vid.srcObject=stream,await vid.play();const cvs=document.getElementById("gm-canvas");cvs.width=vid.videoWidth,cvs.height=vid.videoHeight,cvs.getContext("2d").drawImage(vid,0,0);const img=cvs.toDataURL("image/jpeg").split(",")[1];stream.getTracks().forEach(t=>t.stop()),s.innerHTML="<span style=\'color:#8ab4f8\'>Analyzing screen...</span>";const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key="+k,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:\"Analyze this screenshot. Identify the primary question or problem and provide a clear, concise solution.\"},{inline_data:{mime_type:\"image/jpeg\",data:img}}]}],safetySettings:[{category:\"HARM_CATEGORY_HARASSMENT\",threshold:\"BLOCK_NONE\"},{category:\"HARM_CATEGORY_HATE_SPEECH\",threshold:\"BLOCK_NONE\"},{category:\"HARM_CATEGORY_SEXUALLY_EXPLICIT\",threshold:\"BLOCK_NONE\"},{category:\"HARM_CATEGORY_DANGEROUS_CONTENT\",threshold:\"BLOCK_NONE\"}]})}),data=await res.json();if(data.error)s.innerText="Error: "+data.error.message;else if(data.candidates?.[0])s.style.color="#e3e3e3",s.innerText=data.candidates[0].content.parts[0].text;else s.innerText="AI refused to answer. Check safety filters."}catch(e){s.innerText="System Error: "+e.message}})();`;
   };
 
+  // Effect to set the href manually to bypass React's javascript: URL warning
+  useEffect(() => {
+    if (bookmarkRef.current) {
+      bookmarkRef.current.setAttribute('href', getBookmarkletCode(apiKey));
+    }
+  }, [apiKey]);
+
   const handleCopy = () => {
-    navigator.clipboard.writeText(getBookmarkletCode(apiKey));
+    const code = getBookmarkletCode(apiKey);
+    navigator.clipboard.writeText(code);
     setCopied(true);
     setTimeout(() => setCopied(false), 2000);
   };
@@ -34,9 +42,9 @@ const App = () => {
         <div className="hidden md:flex items-center gap-8 text-sm text-[#b4b4b4]">
           <a href="#how" className="hover:text-white transition-colors">How it works</a>
           <a href="#security" className="hover:text-white transition-colors">Security</a>
-          <button className="px-4 py-2 rounded-full bg-[#1e1f20] border border-[#3c4043] hover:bg-[#2b2c2e] transition-all flex items-center gap-2">
+          <div className="px-4 py-2 rounded-full bg-[#1e1f20] border border-[#3c4043] flex items-center gap-2">
             <Monitor size={14} /> Gemini 3 Flash
-          </button>
+          </div>
         </div>
       </nav>
 
@@ -64,15 +72,20 @@ const App = () => {
                 className="w-full bg-[#131314] border border-[#3c4043] rounded-2xl px-5 py-4 text-center focus:outline-none focus:border-[#4285f4] transition-all text-white placeholder-[#4e4f50]"
               />
               <p className="text-xs text-[#757575]">
-                Get your key at <a href="https://aistudio.google.com/" target="_blank" className="text-[#8ab4f8] hover:underline">Google AI Studio</a>. It's free.
+                Get your key at <a href="https://aistudio.google.com/" target="_blank" rel="noopener noreferrer" className="text-[#8ab4f8] hover:underline">Google AI Studio</a>. It's free.
               </p>
             </div>
 
             <div className="flex flex-col items-center gap-4">
               <div className="p-[2px] rounded-full bg-gradient-to-r from-[#4285f4] via-[#9b72cb] to-[#d96570] hover:scale-[1.02] transition-transform">
                 <a
-                  href={getBookmarkletCode(apiKey)}
-                  onClick={(e) => e.preventDefault()}
+                  ref={bookmarkRef}
+                  onClick={(e) => {
+                    if (e.target.tagName === 'A' && !apiKey.trim()) {
+                      e.preventDefault();
+                      alert("Please enter an API key first.");
+                    }
+                  }}
                   className="block px-8 py-4 bg-[#1e1f20] rounded-full text-white font-medium cursor-move select-none"
                 >
                   Drag to Bookmarks Bar
