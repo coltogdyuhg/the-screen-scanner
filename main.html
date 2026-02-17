@@ -1,0 +1,144 @@
+import React, { useState, useEffect } from 'react';
+import { Sparkles, Copy, ExternalLink, ShieldCheck, Zap, Monitor, ArrowRight, Download } from 'lucide-react';
+
+const App = () => {
+  const [apiKey, setApiKey] = useState('');
+  const [copied, setCopied] = useState(false);
+
+  // The 2026 optimized Gemini 3 Bookmarklet Code
+  const getBookmarkletCode = (key) => {
+    const safeKey = key.trim() || 'PASTE_YOUR_API_KEY_HERE';
+    const code = `javascript:(async function(){const k="${safeKey}";const b=document.createElement("div");b.style="position:fixed;top:20px;right:20px;width:320px;background:#1e1f20;color:#e3e3e3;border:1px solid #3c4043;border-radius:16px;padding:20px;z-index:9999999;box-shadow:0 12px 40px rgba(0,0,0,0.6);font-family:sans-serif;line-height:1.5;",b.innerHTML='<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:15px;"><div style="display:flex;align-items:center;gap:8px;"><div style="width:12px;height:12px;background:linear-gradient(45deg,#4285f4,#9b72cb);border-radius:50%"></div><b style="color:#fff;font-size:14px;">Gemini 3 Scanner</b></div><button onclick="this.parentElement.parentElement.remove()" style="background:none;border:none;color:#b4b4b4;cursor:pointer;font-size:18px;">&times;</button></div><div id="gm-status" style="font-size:13px;color:#b4b4b4;max-height:400px;overflow-y:auto;">Ready to scan...</div><canvas id="gm-canvas" style="display:none;"></canvas>',document.body.appendChild(b);const s=document.getElementById("gm-status");try{const stream=await navigator.mediaDevices.getDisplayMedia({video:{displaySurface:"browser"}}),vid=document.createElement("video");vid.srcObject=stream,await vid.play();const cvs=document.getElementById("gm-canvas");cvs.width=vid.videoWidth,cvs.height=vid.videoHeight,cvs.getContext("2d").drawImage(vid,0,0);const img=cvs.toDataURL("image/jpeg").split(",")[1];stream.getTracks().forEach(t=>t.stop()),s.innerHTML="<span style='color:#8ab4f8'>Analyzing screen...</span>";const res=await fetch("https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key="+k,{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({contents:[{parts:[{text:"Analyze this screenshot. Identify the primary question or problem and provide a clear, concise solution."},{inline_data:{mime_type:"image/jpeg",data:img}}]}],safetySettings:[{category:"HARM_CATEGORY_HARASSMENT",threshold:"BLOCK_NONE"},{category:"HARM_CATEGORY_HATE_SPEECH",threshold:"BLOCK_NONE"},{category:"HARM_CATEGORY_SEXUALLY_EXPLICIT",threshold:"BLOCK_NONE"},{category:"HARM_CATEGORY_DANGEROUS_CONTENT",threshold:"BLOCK_NONE"}]})}),data=await res.json();if(data.error)s.innerText="Error: "+data.error.message;else if(data.candidates?.[0])s.style.color="#e3e3e3",s.innerText=data.candidates[0].content.parts[0].text;else s.innerText="AI refused to answer. Check safety filters."}catch(e){s.innerText="System Error: "+e.message}})();`;
+    return code;
+  };
+
+  const handleCopy = () => {
+    navigator.clipboard.writeText(getBookmarkletCode(apiKey));
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  return (
+    <div className="min-h-screen bg-[#131314] text-[#e3e3e3] font-sans selection:bg-blue-500/30">
+      {/* Background Glow */}
+      <div className="fixed top-0 left-1/2 -translate-x-1/2 w-full max-w-4xl h-[500px] bg-blue-600/10 blur-[120px] rounded-full pointer-events-none" />
+
+      {/* Header */}
+      <nav className="relative flex items-center justify-between px-8 py-6 max-w-6xl mx-auto">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-lg bg-gradient-to-tr from-[#4285f4] via-[#9b72cb] to-[#d96570] flex items-center justify-center">
+            <Sparkles className="text-white w-5 h-5" />
+          </div>
+          <span className="text-xl font-medium tracking-tight">AI Bookmarklet</span>
+        </div>
+        <div className="hidden md:flex items-center gap-8 text-sm text-[#b4b4b4]">
+          <a href="#how" className="hover:text-white transition-colors">How it works</a>
+          <a href="#security" className="hover:text-white transition-colors">Security</a>
+          <button className="px-4 py-2 rounded-full bg-[#1e1f20] border border-[#3c4043] hover:bg-[#2b2c2e] transition-all flex items-center gap-2">
+            <Monitor size={14} /> Gemini 3 Flash
+          </button>
+        </div>
+      </nav>
+
+      <main className="relative max-w-4xl mx-auto px-6 py-12 md:py-24 text-center">
+        {/* Hero Section */}
+        <h1 className="text-5xl md:text-7xl font-semibold tracking-tight mb-6 bg-gradient-to-r from-[#4285f4] via-[#9b72cb] to-[#d96570] bg-clip-text text-transparent">
+          The Screen Scanner.
+        </h1>
+        <p className="text-lg md:text-xl text-[#b4b4b4] max-w-2xl mx-auto mb-12">
+          A powerful, zero-install bookmarklet that lets you solve anything on your screen using Gemini 3. Just drag, click, and scan.
+        </p>
+
+        {/* Setup Card */}
+        <div className="bg-[#1e1f20] border border-[#3c4043] rounded-[32px] p-8 md:p-12 shadow-2xl">
+          <div className="max-w-md mx-auto space-y-8">
+            <div className="space-y-3">
+              <label className="text-sm font-medium text-[#8ab4f8] flex items-center gap-2 justify-center">
+                <ShieldCheck size={16} /> ENTER YOUR GEMINI API KEY
+              </label>
+              <input
+                type="text"
+                value={apiKey}
+                onChange={(e) => setApiKey(e.target.value)}
+                placeholder="AIzaSy..."
+                className="w-full bg-[#131314] border border-[#3c4043] rounded-2xl px-5 py-4 text-center focus:outline-none focus:border-[#4285f4] transition-all text-white placeholder-[#4e4f50]"
+              />
+              <p className="text-xs text-[#757575]">
+                Get your key at <a href="https://aistudio.google.com/" target="_blank" className="text-[#8ab4f8] hover:underline">Google AI Studio</a>. It's free.
+              </p>
+            </div>
+
+            <div className="flex flex-col items-center gap-4">
+              <div className="p-[2px] rounded-full bg-gradient-to-r from-[#4285f4] via-[#9b72cb] to-[#d96570] hover:scale-[1.02] transition-transform">
+                <a
+                  href={getBookmarkletCode(apiKey)}
+                  onClick={(e) => e.preventDefault()}
+                  className="block px-8 py-4 bg-[#1e1f20] rounded-full text-white font-medium cursor-move select-none"
+                >
+                  Drag to Bookmarks Bar
+                </a>
+              </div>
+              <span className="text-sm text-[#b4b4b4] flex items-center gap-2">
+                <ArrowRight size={14} /> or copy the code below
+              </span>
+            </div>
+
+            <button
+              onClick={handleCopy}
+              className="flex items-center gap-2 text-sm text-[#b4b4b4] hover:text-white mx-auto transition-colors"
+            >
+              {copied ? 'Copied!' : 'Copy raw code'} <Copy size={14} />
+            </button>
+          </div>
+        </div>
+
+        {/* Features Grid */}
+        <div className="grid md:grid-cols-3 gap-6 mt-24 text-left">
+          <div className="p-6 rounded-2xl bg-[#1e1f20]/50 border border-[#3c4043]/50">
+            <Zap className="text-[#8ab4f8] mb-4" />
+            <h3 className="font-medium mb-2">Gemini 3 Flash</h3>
+            <p className="text-sm text-[#b4b4b4]">Powered by the 2026 flagship model for near-instant analysis.</p>
+          </div>
+          <div className="p-6 rounded-2xl bg-[#1e1f20]/50 border border-[#3c4043]/50">
+            <Monitor className="text-[#c58af9] mb-4" />
+            <h3 className="font-medium mb-2">Native Capture</h3>
+            <p className="text-sm text-[#b4b4b4]">Uses standard browser APIs to grab the exact tab you want to solve.</p>
+          </div>
+          <div className="p-6 rounded-2xl bg-[#1e1f20]/50 border border-[#3c4043]/50">
+            <ShieldCheck className="text-[#f98a8a] mb-4" />
+            <h3 className="font-medium mb-2">Privacy First</h3>
+            <p className="text-sm text-[#b4b4b4]">Your API key stays in the bookmark. We never see your data.</p>
+          </div>
+        </div>
+      </main>
+
+      {/* Instruction Section */}
+      <section id="how" className="max-w-4xl mx-auto px-6 py-24 border-t border-[#3c4043]">
+        <h2 className="text-3xl font-medium mb-12 text-center">Installation Guide</h2>
+        <div className="space-y-12">
+          {[
+            { step: 1, title: "Add Your Key", desc: "Paste your Gemini API key into the box above. The button will automatically update with your unique code." },
+            { step: 2, title: "Drag to Bar", desc: "Ensure your Bookmarks Bar is visible (Ctrl+Shift+B). Drag the colorful 'Drag to Bookmarks Bar' button into that space." },
+            { step: 3, title: "Scan & Solve", desc: "Navigate to any homework site or quiz. Click your bookmark, select the tab, and watch Gemini 3 solve it in real-time." }
+          ].map((item) => (
+            <div key={item.step} className="flex gap-6 items-start">
+              <div className="w-10 h-10 rounded-full bg-[#2b2c2e] flex items-center justify-center shrink-0 font-bold border border-[#3c4043]">
+                {item.step}
+              </div>
+              <div>
+                <h4 className="text-lg font-medium mb-1">{item.title}</h4>
+                <p className="text-[#b4b4b4]">{item.desc}</p>
+              </div>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <footer className="py-12 text-center text-sm text-[#757575] border-t border-[#3c4043]">
+        <p>© 2026 AI Bookmarklet Project. Not affiliated with Google.</p>
+      </footer>
+    </div>
+  );
+};
+
+export default App;
